@@ -20,4 +20,4 @@ function NotificationPopup(props) {
     );
 }
 
-export default NotificationPopup;
+export {NotificationPopup};

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import * as Auth from '../../utils/auth.js'
-import { setToken } from '../../utils/token.js';
+import * as Auth from '../../utils/auth.js';
 
-function Login({handleLogin}) {
+function Login(props) {
 
     const [data, setData] = useState({
         email: '',
@@ -23,25 +22,22 @@ function Login({handleLogin}) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        const { username, password } = data;
+        const { email, password } = data;
 
-        if (!username || !password){
+        if (!email || !password){
             return;
         }
 
-        Auth.authorize(username, password)
+        Auth.authorize(email, password)
         .then((data) => {
             if (!data){
                 setMessage('Что-то пошло не так!')
             }
-
-            if (data.jwt) {
-                setToken(data.jwt);
-                setData({ username: '', password: ''});
-                setMessage('');
-                handleLogin(data.user);
-                history.push('/ducks');
-            }
+            localStorage.setItem('jwt', data.token);
+            setData({ email: '', password: ''});
+            setMessage('');
+            props.handleLogin(data);
+            history.push('/');
         })
         .catch(err => console.log(err));
 
@@ -52,8 +48,8 @@ function Login({handleLogin}) {
             <section className="auth">
                 <form noValidate onSubmit={handleSubmit} name="formAuth" className="authform" action="#" method="post">
                     <h2 className="authform__title">Вход</h2>
-                    <input onChange={handleChange} value={data.email} id="email-input" name="inputEmail" required className="authform__input authform__input_el_email" type="text" minLength="2" maxLength="200" placeholder="Email"/>
-                    <input onChange={handleChange} value={data.password} id="pass-input" name="inputPass" required className="authform__input authform__input_el_pass" type="text" minLength="2" maxLength="200" placeholder="Пароль"/>
+                    <input onChange={handleChange} value={data.email} id="email-input" name="email" required className="authform__input authform__input_el_email" type="email" minLength="2" maxLength="200" placeholder="Email"/>
+                    <input onChange={handleChange} value={data.password} id="pass-input" name="password" required className="authform__input authform__input_el_pass" type="password" minLength="2" maxLength="200" placeholder="Пароль"/>
                     <button name="buttonAuth" className="authform__button">Войти</button>
                 </form>
                 <p className="auth__login" >

@@ -8,8 +8,8 @@ class Api {
         if(res.ok) {
             return res.json();
         }
-        return Promise.reject(`Ошибка: ${res.status}`);  
-        
+        return Promise.reject(`Ошибка: ${res.status}`);
+
     }
 
     getItems(id) { //id = cards +
@@ -103,7 +103,7 @@ class Api {
 }
 
 export const api = new Api({
-    baseURL: 'https://mesto.nomoreparties.co/v1/cohort-14', 
+    baseURL: 'https://mesto.nomoreparties.co/v1/cohort-14',
     headers: {
         'Content-Type': 'application/json',
         'authorization': '42b45684-18cf-461b-be7b-02246c8d8e0d'

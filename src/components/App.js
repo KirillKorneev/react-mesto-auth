@@ -1,6 +1,6 @@
-import React, { Route, Router } from 'react';
-import { Switch, Redirect, useHistory } from 'react-router-dom';
-import { getToken } from '../utils/token.js';
+import React from 'react';
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
+import { getToken, setToken } from '../utils/token.js';
 import * as Auth from '../utils/auth.js';
 import {Header} from  './Header/Header.js';
 import {Main} from './Main/Main.js';
@@ -69,6 +69,18 @@ function App() {
     setIsAddPlacePopupOpen(true);
   }
 
+  function handleNotificationOpen() {
+    setIsNotificationPopupOpen(true);
+  }
+
+  function handleSuccesToTrue() {
+    setSuccess(true);
+  }
+
+  function handleSuccesToFalse() {
+    setSuccess(false);
+  }
+
   function deleteCard(card) {
     api.deleteItem('cards', card._id).then(() => {
       const newCards = cards.filter((c) => c._id !== card._id);
@@ -121,10 +133,15 @@ function App() {
     });
   }
 
-  const handleLogin = (userData) => {
+  function handleLogin(userData) {
     setUserData(userData);
     setLoggedIn(true);
   }
+
+  function handleLoginToFalse() {
+    setLoggedIn(false);
+  }
+
 
   function tokenCheck() {
     const jwt = getToken();
@@ -136,8 +153,9 @@ function App() {
     Auth.getContent(jwt).then((res) => {
       if (res) {
         const userData = {
-          email: res.email
+          email: res.data.email
         }
+        setToken(jwt);
         setLoggedIn(true);
         setUserData(userData);
         history.push('/')
@@ -155,10 +173,13 @@ function App() {
       currentUser
     }>
       <div className="page">
-        <Header />
-        <Router>
+        <Header 
+          loggedIn={loggedIn}
+          handleLoginToFalse={handleLoginToFalse}
+          userData={userData}
+        />
           <Switch>
-            <ProtectedRoute
+            <ProtectedRoute exact
               path="/" 
               loggedIn={loggedIn}
               onEditAvatar = {handleEditAvatar}
@@ -178,19 +199,31 @@ function App() {
               onUpdateCards = {handleCardsUpdate}
               component={Main}
             />
-            <Route path="/login">
-              <Login handleLogin={handleLogin} tokenCheck={tokenCheck} />
+            <Route path="/sign-in">
+              <Login 
+                handleLogin={handleLogin} 
+                tokenCheck={tokenCheck} 
+                handleNotificationOpen={handleNotificationOpen}
+                handleSuccesToTrue={handleSuccesToTrue}
+                handleSuccesToFalse={handleSuccesToFalse}
+              />
             </Route>
-            <Route path="/register">
-              <Register />
+            <Route path="/sign-up">
+              <Register 
+                handleNotificationOpen={handleNotificationOpen}
+                handleSuccesToTrue={handleSuccesToTrue}
+                handleSuccesToFalse={handleSuccesToFalse}
+              />
+            </Route>
+            <Route>
+              {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-up" />}
             </Route>
           </Switch>
-        </Router>
-        {/*<NotificationPopup 
+        <NotificationPopup 
           success = {success}
           isOpen = {isNotificationPopupOpen} 
           onClose = {closeAllPopups}  
-        />*/}
+        />
         {loggedIn ? <Footer /> : ''}   
       </div>
     </CurrentUserContext.Provider>
