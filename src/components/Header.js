@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, Route, useHistory } from 'react-router-dom';
-import { removeToken } from '../../utils/token.js';
-//import './Header.css'
+import { removeToken } from '../utils/token.js';
 
 function Header(props) {
 

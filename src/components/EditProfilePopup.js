@@ -1,5 +1,5 @@
 import React from 'react';
-import {CurrentUserContext} from '../../contexts/currentUserContext.js';
+import {CurrentUserContext} from '../contexts/currentUserContext.js';
 
 function EditProfilePopup(props) {
     const currentUser = React.useContext(CurrentUserContext);
@@ -24,11 +24,6 @@ function EditProfilePopup(props) {
         e.preventDefault();
 
         props.onSubmit(name, description);
-
-        setName('');
-        setDescription('');
-
-        props.onClose();
     }
 
     return (

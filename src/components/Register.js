@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
-import * as Auth from '../../utils/auth.js';
-
 function Register(props) {
 
     const [data, setData] = useState({
@@ -10,7 +8,6 @@ function Register(props) {
         password: ''
     })
 
-    const [message, setMessage] = useState('');
     const history = useHistory();
 
     function handleChange(e) {
@@ -24,25 +21,7 @@ function Register(props) {
     function handleSubmit(e) {
         e.preventDefault();
         const { email, password } = data;
-        Auth.register(email, password)
-        .then((res) => {
-        if (res.statusCode !== 400) {
-            setMessage({
-                message: ''
-            })
-            props.handleSuccesToTrue();
-            props.handleNotificationOpen();
-            history.push('/sign-in');
-        }
-        else {
-            setMessage({
-                message: 'Что-то пошло не так!'
-            }); 
-            props.handleSuccesToFalse();
-            props.handleNotificationOpen();
-        }
-        })
-        .catch((err) => console.log(err));
+        props.handleRegisterSite(email, password);
     }
 
     return (

@@ -1,11 +1,11 @@
 import React from 'react';
-import PopupWithForm from '../PopupWithForm/PopupWithForm.js';
-import ImagePopup from '../ImagePopup/ImagePopup.js';
-import Card from '../Card/Card.js'
-import {CurrentUserContext} from '../../contexts/currentUserContext.js';
-import EditProfilePopup from '../EditProfilePopup/EditProfilePopup.js';
-import EditAvatarPopup from '../EditAvatarPopup/EditAvatarPopup.js';
-import AddPlacePopup from '../AddPlacePopup/AddPlacePopup.js';
+import PopupWithForm from './PopupWithForm.js';
+import ImagePopup from './ImagePopup.js';
+import Card from './Card.js'
+import {CurrentUserContext} from '../contexts/currentUserContext.js';
+import EditProfilePopup from './EditProfilePopup.js';
+import EditAvatarPopup from './EditAvatarPopup.js';
+import AddPlacePopup from './AddPlacePopup.js';
 
 
 
@@ -14,24 +14,8 @@ function Main(props) {
     const currentUser = React.useContext(CurrentUserContext);
 
 
-    function likeCard(card) {
-        props.onCardLike(card);
-    }
-
-    function handleCardDelete(card) {
-        props.onDeleteCards(card);
-    } 
-
     function handleSubmit(name, description) {
         props.onUpdateUser({profileName: name, profileJob: description});
-    }
-
-    function handleAvatar(link) {
-        props.onUpdateAvatar(link);
-    }
-
-    function handleCards(name, link) {
-        props.onUpdateCards(name, link)
     }
 
     return (
@@ -51,8 +35,8 @@ function Main(props) {
                 <ul className="elements">
                     {
                         props.cards.map((card, i) => <Card 
-                        onCardLike = {likeCard}
-                        onCardDelete = {handleCardDelete}
+                        onCardLike = {props.onCardLike}
+                        onCardDelete = {props.onDeleteCards}
                         card = {card}
                         key = {i}
                         onCardClick = {props.onCardClick}/>)
@@ -71,7 +55,7 @@ function Main(props) {
             <AddPlacePopup
                         isOpen = {props.isAddPlacePopupOpen} 
                         onClose = {props.onClose}  
-                        onSubmit = {handleCards}                    
+                        onSubmit = {props.onUpdateCards}                    
             />
             <PopupWithForm name="agreement" 
                         type="agree" 
@@ -84,7 +68,7 @@ function Main(props) {
             <EditAvatarPopup
                         isOpen = {props.isEditAvatarPopupOpen}  
                         onClose = {props.onClose}
-                        onSubmit = {handleAvatar}
+                        onSubmit = {props.onUpdateAvatar}
             />
         </main>
     );

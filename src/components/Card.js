@@ -1,5 +1,5 @@
 import React from 'react';
-import {CurrentUserContext} from '../../contexts/currentUserContext.js';
+import {CurrentUserContext} from '../contexts/currentUserContext.js';
 
 export default function Card(props) {
 
@@ -27,7 +27,7 @@ export default function Card(props) {
     
     return (
         <li className="element">
-            <img className="element__photo" src={`${props.card.link}`} onClick={handleClick} alt="Описание фото" />
+            <img className="element__photo" src={`${props.card.link}`} onClick={handleClick} alt={`${props.card.name}`} />
             <div className="element__info">
                 <h2 className="element__name">{props.card.name}</h2>
                 <div className="element__data">

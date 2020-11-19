@@ -9,7 +9,6 @@ function AddPlacePopup(props) {
 
         props.onSubmit(name.current.value, link.current.value);
 
-        props.onClose();
     }
 
     return (

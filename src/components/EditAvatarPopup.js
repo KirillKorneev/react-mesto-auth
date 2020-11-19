@@ -8,7 +8,6 @@ function EditAvatarPopup(props) {
 
         props.onSubmit(avatar.current.value);
 
-        props.onClose();
     }
 
     return (

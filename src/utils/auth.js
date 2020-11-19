@@ -29,6 +29,7 @@ export const authorize = (email, password) => {
   })
   .then((response => response.json()))
   .then((data) => {
+    console.log('ffff');
     if (data){
       setToken(data.token);
       return data;

@@ -1,6 +1,6 @@
 import React from 'react';
-import Success from '../../images/Union.svg';
-import Failure from '../../images/Union1.svg';
+import Success from '../images/Union.svg';
+import Failure from '../images/Union1.svg';
 
 function NotificationPopup(props) {
 
